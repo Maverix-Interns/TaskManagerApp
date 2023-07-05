@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:taskmanagement/view/admindashboard/admindashboard.dart';
-import 'view/admindashboard/admindashboard.dart';
+import 'package:practiceapp/view/CreateTaskPage.dart';
 
 void main() {
-  runApp(admindashboard());
+  runApp(const MyApp());
+}
 
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
-class admindashboard extends StatelessWidget {
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        body: admindashboardBody(), // Use the AdminDashboard widget
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
       ),
-
+      home: CreateTaskPage(title:""),
     );
   }
 }
-}
+
+

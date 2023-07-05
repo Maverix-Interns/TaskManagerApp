@@ -1,6 +1,6 @@
 {
-    "name": "taskmanagement",
-    "short_name": "taskmanagement",
+    "name": "practiceapp",
+    "short_name": "practiceapp",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
