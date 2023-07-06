@@ -24,11 +24,10 @@ class EmployeeLists extends GetxController {
 
 
   ];
-  }
 
-  class ListofEmply extends GetxController{
+  RxList<EmployeeModel> employee =<EmployeeModel>[
 
-  Rx<List<EmployeeModel>> employee =Rx<List<EmployeeModel>>([]);
+  ].obs;
   TextEditingController nameTextEditingController = TextEditingController();
   TextEditingController idTextEditingController = TextEditingController();
   TextEditingController taskassignedTextEditingController = TextEditingController();
@@ -67,15 +66,13 @@ class EmployeeLists extends GetxController {
   {
 
    // EmployeeModel employeeModel = EmployeeModel(id: id, name: name, taskassigned: taskassign, taskcompleted: taskcomplt) ;
-   employee.value.add(employeeModel);
+   employee.add(employeeModel);
    itemcount.value = employee.value.length;
-   nameTextEditingController.clear();
-   idTextEditingController.clear();
 
   }
   removeEmployee(int index)
   {
-    employee.value.removeAt(index);
+    employee.removeAt(index);
     itemcount.value = employee.value.length;
   }
 

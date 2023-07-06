@@ -9,9 +9,10 @@ class EmployeeList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    EmployeeLists controller = Get.put(EmployeeLists());
     return Scaffold(
       appBar: buildAppBar(),
-      body: EmployeeListbody(),
+      body: EmployeeListbody(controller: controller,),
     );
   }
 
@@ -40,9 +41,10 @@ class EmployeeList extends StatelessWidget {
 }
 
 class EmployeeListbody extends StatelessWidget {
-  EmployeeListbody({super.key});
-  EmployeeLists employeeLists = EmployeeLists();
-  ListofEmply b = Get.put(ListofEmply());
+  EmployeeLists controller;
+  EmployeeListbody({super.key,required this.controller});
+  EmployeeLists employeeLists = Get.put(EmployeeLists());
+
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +68,9 @@ class EmployeeListbody extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
+           SizedBox(
+             height:30 ,
+           ),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -88,16 +93,20 @@ class EmployeeListbody extends StatelessWidget {
                             value: selectedType.id,
                           );
                         }).toList(),
-                      )),
+                      )
+
+                ),
                 ),
                 GestureDetector(
                   onTap: () {
+                    // print(employeeLists.listType
+                    //     .where((e) => e.id == employeeLists.selected.value).length);
                     EmployeeModel model = employeeLists.listType
                         .where((e) => e.id == employeeLists.selected.value)
                         .first;
-                    b.addEmployee(model);
+                    employeeLists.addEmployee(model);
                   },
-                  child: Container(
+                  child:Container(
                     width: 80,
                     height: 40,
                     decoration: BoxDecoration(
@@ -115,34 +124,41 @@ class EmployeeListbody extends StatelessWidget {
                     ),
                   ),
                 ),
+
               ],
-            ),
+    ),
+
+
             Expanded(
-                child: ListView.builder(
-                    itemCount: b.employee.value.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(b.employee.value[index].name),
-                        subtitle: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                                b.employee.value[index].taskcompleted
-                                    .toString(),
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            Text('/'),
-                            Text(b.employee.value[index].taskassigned
-                                .toString()),
-                          ],
+                child: Obx(() => ListView.builder(
+                        itemCount: controller.employee.value.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(controller.employee.value[index].name),
+                            subtitle: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                    controller.employee.value[index].taskcompleted
+                                        .toString(),
+                                    style: TextStyle(fontWeight: FontWeight.bold)),
+                                Text('/'),
+                                Text(controller.employee.value[index].taskassigned
+                                    .toString()),
+                              ],
+                            ),
+                            trailing: GestureDetector(
+                              child: Icon(Icons.delete, color: Colors.red),
+                              onTap: () {
+                                controller.removeEmployee(index);
+                              },
+                            ),
+                          );
+                        }
                         ),
-                        trailing: GestureDetector(
-                          child: Icon(Icons.delete, color: Colors.red),
-                          onTap: () {
-                            b.removeEmployee(index);
-                          },
-                        ),
-                      );
-                    })),
+            ),
+
+            ),
           ],
         ),
       ),
