@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 import 'package:taskmanagement/view/Employee_List/employeelist_view.dart';
 import 'package:taskmanagement/view/widgets/bottomnavbar.dart';
 
 
-
-void main() {
-  runApp(const MyApp());
-}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -15,15 +10,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner:false ,
+    return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:   NavBar(),
+      home:  NavBar(),
     );
   }
 }
-
