@@ -1,29 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:practiceapp/control/CreateTask_controller.dart';
 
-class CreateTaskPage extends StatefulWidget {
-  const CreateTaskPage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<CreateTaskPage> createState() => _MyHomePageState();
-}
+class CreateTaskPage extends GetView<CreateTask_controller> {
 
 
 
 
-
-class _MyHomePageState extends State<CreateTaskPage> {
-  final formKey = GlobalKey<FormState>();
-
-  var project_name = "The Dummy Project Name";
-//this variable should contain the projectname to be diplayed in the"project name "section.
-
-  var user_name = "UserName";
 //this variable should contain the UserName to be diplayed in the"UserName "section.
 
-  String dropdownvalue = 'Employee 1';
-
+  var dropdownvalue = 'Employee 1';
   // List of items in our dropdown menu
   var items = [
     'Employee 1',
@@ -32,7 +18,7 @@ class _MyHomePageState extends State<CreateTaskPage> {
     'Employee 4',
     'Employee 5'];
 
-  DateTime selectedDate = DateTime.now();
+  /*DateTime selectedDate = DateTime.now();
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -45,34 +31,16 @@ class _MyHomePageState extends State<CreateTaskPage> {
         selectedDate = picked;
       });
     }
-  }
+  }*/
 
   TextEditingController _date = TextEditingController();
 
-
   @override
   Widget build(BuildContext context) {
+    CreateTask_controller controller = Get.put(CreateTask_controller());
 
     return Scaffold(
-        appBar: AppBar(
-
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-
-          title: Image.asset("assets/MaverixPro-logo.png",height: 40,width: 200,fit: BoxFit.cover,),
-          actions: <Widget>[
-            Text("UserName"),
-            IconButton(
-              icon: Icon(
-                Icons.person_2_outlined,
-                color: Colors.black,
-              ),
-              onPressed: () {
-                // do something
-              },
-            )
-          ],
-
-        ),
+        appBar: buildAppBar(context),
         bottomNavigationBar:BottomAppBar(
           child: new Row(
             mainAxisSize: MainAxisSize.max,
@@ -91,13 +59,14 @@ class _MyHomePageState extends State<CreateTaskPage> {
             child: Container(
               padding: const EdgeInsets.only(left: 40, right: 40),
               child:Form(
-                key: formKey,
+                key:controller.CreateTaskFormKey,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(height: 30,),
                     Text("Project Name", style: TextStyle(fontSize: 30, color:Colors.black),),
-                    Text("$project_name", style: TextStyle(fontSize: 20, color:Colors.black),),
+                    Obx(() => Text(controller.project_name.value, style: TextStyle(fontSize: 20, color:Colors.black))),
                     SizedBox(height: 30,),
                     TextFormField(
                         minLines: 1,
@@ -105,14 +74,14 @@ class _MyHomePageState extends State<CreateTaskPage> {
                         decoration: InputDecoration(
                           labelText: "Task Name",border: OutlineInputBorder(),
                         ),
+                        keyboardType: TextInputType.emailAddress,
+                        controller: controller.TaskNameController,
+                        onSaved:(value){
+                          controller.TaskName = value!;
+                        } ,
                         validator: (value){
-                          if(value!.isEmpty){
-                            return "Enter the task name";
-                          }
-                          else{
-                            return null;
-                          }
-                        }
+                          return controller.ValidateTaskName(value!);
+                        },
                     ),
 
                     SizedBox(height: 30,),
@@ -122,30 +91,55 @@ class _MyHomePageState extends State<CreateTaskPage> {
                         ),
                         minLines: 5,
                         maxLines: null,
+                        controller: controller.TaskDescriptionController,
+                        onSaved:(value){
+                          controller.TaskDescription = value!;
+                       } ,
                         validator: (value){
-                          if(value!.isEmpty){
-                            return "Enter the task description";
-                          }
-                          else{
-                            return null;
-                          }
-                        }
+                         return controller.ValidateTaskDescription(value!);
+                        },
                     ),
 
                     SizedBox(height: 30,),
-                    DropdownButton(
-                      value: dropdownvalue,
-                      icon: const Icon(Icons.keyboard_arrow_down),
-                      items: items.map((String items) {
-                        return DropdownMenuItem(
-                          value: items,
-                          child: Text(items),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {setState(() {
-                        dropdownvalue = newValue!;
-                      });},
+                    Obx(
+                          () => Padding(
+                        padding: const EdgeInsets.only(bottom: 16.0, right: 16.0),
+                        child: DropdownButton(
+                          onChanged: (newValue) {
+                            controller.selected.value = (newValue as String?)!;
+                          },
+                          value: controller.selected.value,
+                          items: controller.listType.map((selectedType) {
+                            return DropdownMenuItem(
+                              value: selectedType,
+                              child: Column(
+                                children: [
+                                  Text(selectedType),
+                                ],
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ),
                     ),
+
+
+
+
+                    /* DropdownButton(
+                        value: dropdownvalue,
+                        icon: const Icon(Icons.keyboard_arrow_down),
+                        items: items.map((String items) {
+                          return DropdownMenuItem(
+                            value: items,
+                            child: Text(items),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {setState(() {
+                          dropdownvalue = newValue!;
+                        });},
+                      ),
+
 
 
 
@@ -164,11 +158,13 @@ class _MyHomePageState extends State<CreateTaskPage> {
 
                         decoration: BoxDecoration(color: Colors.grey,shape: BoxShape.rectangle,borderRadius: BorderRadius.circular(10)),
                       ),
-                    ),
+                    ),*/
 
                     SizedBox(height: 40,),
                     GestureDetector(
-                      onTap: (null),
+                      onTap:(){
+                        controller.CheckCreateTask();
+                      },
                       child: Container(
                         alignment: Alignment(0.0, 0.0),
                         height: 50,
@@ -189,4 +185,27 @@ class _MyHomePageState extends State<CreateTaskPage> {
 
     );
   }
+
+  AppBar buildAppBar(BuildContext context) {
+    return AppBar(
+
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+
+        title: Image.asset("assets/MaverixPro-logo.png",height: 40,width: 200,fit: BoxFit.cover,),
+        actions: <Widget>[
+          Obx(() => Text(controller.user_name.value)),
+          IconButton(
+            icon: Icon(
+              Icons.person_2_outlined,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              // do something
+            },
+          )
+        ],
+
+      );
+  }
 }
+
