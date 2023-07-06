@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:taskmanagement/controller/viewcontroller.dart';
 import 'package:taskmanagement/view/view_project/employeelist.dart';
 import 'package:taskmanagement/view/view_project/home.dart';
 import 'package:taskmanagement/view/view_project/pmlist.dart';
@@ -13,7 +14,7 @@ class ViewProject extends StatelessWidget {
     return Scaffold(
       appBar: buildAppBar(),
       body:
-      SingleChildScrollView(child: ViewProjectBody()),
+      const SingleChildScrollView(child: ViewProjectBody()),
     );
   }
 
@@ -41,8 +42,9 @@ class ViewProjectBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ViewController form=Get.put(ViewController());
     return Padding(
-      padding:  const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(left: 20, right: 20),
       child:  Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -59,13 +61,16 @@ class ViewProjectBody extends StatelessWidget {
               ),
             ),
 
-          const Padding(
-            padding: EdgeInsets.only(bottom: 16.0),
+           Padding(
+            padding: const EdgeInsets.only(bottom: 5.0),
           child: TextField(
+            controller: form.projectname,
             decoration: InputDecoration(
               fillColor: Colors.white12, // Set your desired color here
               filled: true,
-              border: OutlineInputBorder(),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
               labelText: 'TaskTracker',
             ),
           ),
@@ -82,14 +87,17 @@ class ViewProjectBody extends StatelessWidget {
                 fontSize: 20, // Adjust the size as needed
               ),
             ),
-          const Padding(
-            padding: EdgeInsets.only(bottom: 16.0),
+           Padding(
+            padding: const EdgeInsets.only(bottom: 5.0),
             child: TextField(
+              controller: form.projdescription,
               decoration: InputDecoration(
                 fillColor: Colors.white12, // Set your desired color here
                 filled: true,
-                contentPadding: EdgeInsets.symmetric(vertical: 40.0),
-                border: OutlineInputBorder(),
+                contentPadding: const EdgeInsets.symmetric(vertical: 40.0),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
                 labelText: 'TaskTracker" is a project management tool that helps individuals and teams organize, '
                     'track, and collaborate on tasks and projects. ',
               ),
@@ -108,13 +116,16 @@ class ViewProjectBody extends StatelessWidget {
                 fontSize: 20, // Adjust the size as needed
               ),
                 ),
-          const Padding(
-            padding: EdgeInsets.only(bottom: 16.0),
-            child: TextField(
+           Padding(
+            padding: const EdgeInsets.only(bottom: 10.0),
+            child: TextFormField(
+              controller: form.projectmanager,
               decoration: InputDecoration(
                 fillColor: Colors.white12, // Set your desired color here
                 filled: true,
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
                 labelText: 'Sam Krishnan',
               ),
             ),
@@ -129,13 +140,16 @@ class ViewProjectBody extends StatelessWidget {
                 fontSize: 20, // Adjust the size as needed
               ),
                 ),
-          const Padding(
-            padding: EdgeInsets.only(bottom: 16.0),
+           Padding(
+            padding: const EdgeInsets.only(bottom: 16.0),
             child: TextField(
+              controller: form.deadline,
               decoration: InputDecoration(
                 fillColor: Colors.white12, // Set your desired color here
                 filled: true,
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
                 labelText: '00/00/0000',
               ),
             ),
@@ -154,7 +168,7 @@ class ViewProjectBody extends StatelessWidget {
                   height: 40,
                   decoration: BoxDecoration(
                     color: Colors.blue,
-                    borderRadius: BorderRadius.circular(5),
+                    borderRadius: BorderRadius.circular(20),
                   ),
                   child: const Center(
                     child: Text(
@@ -170,14 +184,16 @@ class ViewProjectBody extends StatelessWidget {
               const SizedBox(width: 30),
               GestureDetector(
                 onTap: (){
-
+                  Get.snackbar("Success", "The project is edited successfully ",
+                    backgroundColor: Colors.green,
+                  );
                 },
                 child: Container(
                   width: 80,
                   height: 40,
                   decoration: BoxDecoration(
                     color: Colors.blue,
-                    borderRadius: BorderRadius.circular(5),
+                    borderRadius: BorderRadius.circular(20),
                   ),
                   child: const Center(
                     child: Text(
@@ -191,7 +207,7 @@ class ViewProjectBody extends StatelessWidget {
                 ),
               ),
             ],
-          )
+          ),
           ],
       ),
     );
