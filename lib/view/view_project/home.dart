@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:taskmanagement/view/view_project/project_list.dart';
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -7,7 +7,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Scaffold(
      appBar: builtappBar(),
-      body: HomeBody(),
+      body: ProjectListPage(),
     );
   }
 
