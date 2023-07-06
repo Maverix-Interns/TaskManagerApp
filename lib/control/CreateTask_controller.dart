@@ -24,16 +24,27 @@ class CreateTask_controller extends GetxController{
     selected.value = value;
   }
 
+  var selectedDate = DateTime.now().obs;
+
 
   @override
+  chooseDate() async {
+    DateTime? pickedDate = await showDatePicker(
+        context: Get.context!,
+        initialDate: selectedDate.value,
+        firstDate: DateTime(2000),
+        lastDate: DateTime(2050),);
 
+    if(pickedDate!= null && pickedDate!= selectedDate.value){
+      selectedDate.value = pickedDate;
+    }
+  }
 
-
+  @override
   void onInit(){
     super.onInit();
     TaskNameController = TextEditingController();
     TaskDescriptionController = TextEditingController();
-
   }
 
   @override

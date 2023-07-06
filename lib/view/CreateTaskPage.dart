@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:practiceapp/control/CreateTask_controller.dart';
 
 class CreateTaskPage extends GetView<CreateTask_controller> {
@@ -122,6 +123,12 @@ class CreateTaskPage extends GetView<CreateTask_controller> {
                         ),
                       ),
                     ),
+                    SizedBox(height: 30,),
+                    Obx(() => Text(DateFormat("dd-MM-yyyy").format(controller.selectedDate.value).toString(),
+                    style: TextStyle(fontSize: 25),),),
+                    ElevatedButton(
+                        onPressed: (){controller.chooseDate();},
+                        child: Text('SELECT DATE')),
 
 
 
